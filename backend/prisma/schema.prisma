@@ -9,11 +9,11 @@ datasource db {
 
 model PanelType {
   id          String       @id @default(uuid())
-  name        String       @unique
+  name        String
   manufacturer String
-  efficiency  Float       
-  wattage     Int         
-  pricePerWatt Float      
+  efficiency  Float
+  wattage     Int
+  pricePerWatt Float
   createdAt   DateTime     @default(now())
   simulations Simulation[]
 }
@@ -24,21 +24,19 @@ model Location {
   country          String
   latitude         Float
   longitude        Float
-  avgSunHoursPerDay Float   
+  avgSunHoursPerDay Float
   createdAt        DateTime     @default(now())
   simulations      Simulation[]
-
-  @@unique([city, country])
 }
 
 model Simulation {
   id                String     @id @default(uuid())
   locationId        String
   panelTypeId       String
-  roofSizeM2        Float      
-  estimatedOutput   Float      
-  estimatedCost     Float      
-  estimatedROI      Float    
+  roofSizeM2        Float
+  estimatedOutput   Float
+  estimatedCost     Float
+  estimatedROI      Float
   createdAt         DateTime   @default(now())
   
   location          Location   @relation(fields: [locationId], references: [id])
