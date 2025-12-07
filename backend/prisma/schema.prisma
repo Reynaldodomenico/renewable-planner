@@ -1,14 +1,44 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model PanelType {
+  id          String       @id @default(uuid())
+  name        String
+  manufacturer String
+  efficiency  Float        // Percentage (e.g., 22.5)
+  wattage     Int          // Watts per panel
+  pricePerWatt Float       // USD per watt
+  createdAt   DateTime     @default(now())
+  simulations Simulation[]
+}
+
+model Location {
+  id               String       @id @default(uuid())
+  city             String
+  country          String
+  latitude         Float
+  longitude        Float
+  avgSunHoursPerDay Float       // Average sun hours per day
+  createdAt        DateTime     @default(now())
+  simulations      Simulation[]
+}
+
+model Simulation {
+  id                String     @id @default(uuid())
+  locationId        String
+  panelTypeId       String
+  roofSizeM2        Float      // Square meters
+  estimatedOutput   Float      // kWh per year
+  estimatedCost     Float      // USD
+  estimatedROI      Float      // Years
+  createdAt         DateTime   @default(now())
+  
+  location          Location   @relation(fields: [locationId], references: [id])
+  panelType         PanelType  @relation(fields: [panelTypeId], references: [id])
 }
