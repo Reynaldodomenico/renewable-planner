@@ -17,20 +17,33 @@ services:
       timeout: 5s
       retries: 5
 
+  rust-simulator:
+    build: ./rust-simulator
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   backend:
     build: ./backend
     ports:
       - "4000:4000"
     environment:
       DATABASE_URL: database_url
+      RUST_SIMULATOR_URL: http://rust-simulator:8080
       PORT: 4000
     depends_on:
       postgres:
         condition: service_healthy
+      rust-simulator:
+        condition: service_healthy
     volumes:
       - ./backend:/app
       - /app/node_modules
-    command: sh -c "npx prisma migrate dev --name init && npx prisma db seed && npm run dev"
+    command: sh -c "npx prisma migrate deploy && npx prisma db seed && npm run dev"
 
   frontend:
     build: ./frontend
