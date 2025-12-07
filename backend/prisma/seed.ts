@@ -3,17 +3,15 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // Check if data already exists
   const existingPanels = await prisma.panelType.count();
   
   if (existingPanels > 0) {
-    console.log('✅ Database already seeded, skipping...');
+    console.log('Database already seeded, skipping...');
     return;
   }
 
-  console.log('🌱 Seeding database...');
+  console.log('Seeding database...');
 
-  // Seed panel types
   await prisma.panelType.createMany({
     data: [
       {
@@ -47,7 +45,6 @@ async function main() {
     ],
   });
 
-  // Seed locations
   await prisma.location.createMany({
     data: [
       {
@@ -84,7 +81,7 @@ async function main() {
   const panels = await prisma.panelType.count();
   const locations = await prisma.location.count();
 
-  console.log('✅ Seeded:', { panels, locations });
+  console.log('Seeded:', { panels, locations });
 }
 
 main()

@@ -165,7 +165,7 @@ function App() {
 
         {/* Selected panel info */}
         {selectedPanel && (
-          <div className="mb-4 p-2 bg-gray-100 rounded">
+          <div className="mb-4 p-2 bg-gray-500 rounded">
             Selected Panel:{' '}
             {panels.find((p: PanelType) => p.id === selectedPanel)?.manufacturer} - $
             {panels.find((p: PanelType) => p.id === selectedPanel)?.pricePerWatt}/W
@@ -197,7 +197,7 @@ function App() {
 
       {/* Simulation Results */}
       {mutationData && (
-        <div className="p-4 bg-green-100 border border-green-300 rounded-lg mb-8">
+        <div className="p-4 bg-white border border-gray-500 rounded-lg mb-8">
           <h3 className="font-bold mb-2">Simulation Complete!</h3>
           <p>
             Annual Output:{' '}
